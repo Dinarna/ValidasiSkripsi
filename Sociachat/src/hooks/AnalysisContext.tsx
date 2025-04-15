@@ -1,29 +1,29 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { axiosPrivate, axiosPublic } from "@/axiosConfig";
-
 import {
-  CONTENT_OVERVIEW,
-  CONTENT_TREN_OF_TWEET,
-  CONTENT_SENTIMENT_ANALYST,
-  CONTENT_EMOTION_ANALYSIS,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import { API } from "@/lib/urls";
+import { Buzzer } from "@/types/Buzzer";
+import { ChatbotMessage, ChatbotPromptTopics } from "@/types/Chatbot";
+import { Community } from "@/types/Community";
+import {
   CONTENT_BUZZER,
-  CONTENT_COMMUNITY,
   CONTENT_CHAT_BOT,
+  CONTENT_COMMUNITY,
+  CONTENT_EMOTION_ANALYSIS,
+  CONTENT_OVERVIEW,
+  CONTENT_SENTIMENT_ANALYST,
+  CONTENT_TREN_OF_TWEET,
 } from "@/types/constantLabelSidebar";
+import { Emotion, TEmotion } from "@/types/Emotion";
 import Project from "@/types/Project";
 import { Sentiment, TSentiment } from "@/types/Sentiment";
-import axios from "axios";
-import { API } from "@/lib/urls";
 import { Topic, TweetTopic } from "@/types/Topic";
-import { Emotion, TEmotion } from "@/types/Emotion";
-import { Buzzer } from "@/types/Buzzer";
-import {
-  ChatbotMessage,
-  ChatbotPrompt,
-  ChatbotPromptTopic,
-  ChatbotPromptTopics,
-} from "@/types/Chatbot";
-import { Community } from "@/types/Community";
 
 type AnalysisProviderProps = {
   children: ReactNode;
@@ -77,7 +77,8 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [active, setActive] = useState<string>(CONTENT_CHAT_BOT);
   const [selectedModel, setSelectedModel] = useState<string>("cnn-lstm");
-  const [selectedModelEmotion, setSelectedModelEmotion] = useState<string>("cnn-bilstm");
+  const [selectedModelEmotion, setSelectedModelEmotion] =
+    useState<string>("cnn-bilstm");
   const [selectedTopic, setSelectedTopic] = useState("all");
   const [filteredTopic, setFilteredTopic] = useState<Topic[]>([]);
 
@@ -101,12 +102,16 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
 
   // community
   const [community, setCommunity] = useState<Community | null>(null);
-  const [filteredCommunity, setFilteredCommunity] = useState<Community | null>(null);
+  const [filteredCommunity, setFilteredCommunity] = useState<Community | null>(
+    null
+  );
 
   // chatbot
   const [prompt, setPrompt] = useState<ChatbotPromptTopics | null>(null);
   const [messages, setMessages] = useState<ChatbotMessage[]>([]);
-  const [hasAnimated, setHasAnimated] = useState<{ [key: number]: boolean }>({});
+  const [hasAnimated, setHasAnimated] = useState<{ [key: number]: boolean }>(
+    {}
+  );
 
   const handleSetHasAnimated = (index: number) => {
     setHasAnimated((prevState) => ({
@@ -131,7 +136,13 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
 
   useEffect(() => {
     getData();
-  }, [selectedProject, active, selectedModel, selectedTopic, selectedModelEmotion]);
+  }, [
+    selectedProject,
+    active,
+    selectedModel,
+    selectedTopic,
+    selectedModelEmotion,
+  ]);
 
   const getData = async () => {
     // if (selectedProject) {
@@ -165,7 +176,9 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
 
   const getProjects = async () => {
     try {
-      const response = await axiosPrivate.get(`${API}/project?name=&page=1&limit=100`);
+      const response = await axiosPrivate.get(
+        `${API}/project?name=&page=1&limit=100`
+      );
       setProjects(response.data.data.projects);
     } catch (error) {
       console.error(error);
@@ -174,7 +187,9 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
 
   const getOverview = async () => {
     try {
-      const response = await axiosPrivate.get(`${API}/project/${selectedProject?._id}`);
+      const response = await axiosPrivate.get(
+        `${API}/project/${selectedProject?._id}`
+      );
       setOverview(response.data.data);
     } catch (error) {
       console.error(error);
@@ -212,7 +227,7 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
     try {
       let url = `${API}/topic/document-by-project/${selectedProject?._id}`;
 
-      if(selectedTopic != "all") {
+      if (selectedTopic != "all") {
         url += `?topic=${selectedTopic}`;
       }
 
@@ -225,13 +240,16 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
 
   const getSentiment = async () => {
     try {
-      const response = await axiosPublic.get(`${API}/sentiment/visualize-sentiment`, {
-        params: {
-          project_id: selectedProject?._id,
-          topic: selectedTopic == "all" ? "" : selectedTopic,
-          model_type: selectedModel,
-        },
-      });
+      const response = await axiosPublic.get(
+        `${API}/sentiment/visualize-sentiment`,
+        {
+          params: {
+            project_id: selectedProject?._id,
+            topic: selectedTopic == "all" ? "" : selectedTopic,
+            model_type: selectedModel,
+          },
+        }
+      );
 
       const responseData: Sentiment = response.data as Sentiment;
       setSentiment(responseData);
@@ -255,13 +273,16 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
 
   const getEmotion = async () => {
     try {
-      const response = await axiosPublic.get(`${API}/sentiment/visualize-emotion`, {
-        params: {
-          project_id: selectedProject?._id,
-          topic: selectedTopic == "all" ? "" : selectedTopic,
-          model_type: selectedModelEmotion,
-        },
-      });
+      const response = await axiosPublic.get(
+        `${API}/sentiment/visualize-emotion`,
+        {
+          params: {
+            project_id: selectedProject?._id,
+            topic: selectedTopic == "all" ? "" : selectedTopic,
+            model_type: selectedModelEmotion,
+          },
+        }
+      );
 
       const responseData: Emotion = response.data as Emotion;
       setEmotion(responseData);
@@ -269,7 +290,8 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
       const filteredByModel = responseData.emotion.filter(
         (item) =>
           (selectedModelEmotion === "cnn" && item.predicted_emotions_cnn) ||
-          (selectedModelEmotion === "cnn-bilstm" && item.predicted_emotions_bilstm)
+          (selectedModelEmotion === "cnn-bilstm" &&
+            item.predicted_emotions_bilstm)
       );
 
       const filteredByTopic =
@@ -330,7 +352,6 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
     //   const response = await axiosPublic.get(
     //     `${API}/chatbot/prompt?project_id=${selectedProject?._id}`
     //   );
-
     //   const data = response.data.data.prompt;
     //   setPrompt(data);
     // } catch (error) {
@@ -340,10 +361,13 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
 
   const sendChat = async (question: string, messages: ChatbotMessage[]) => {
     try {
-      setMessages([...messages, { text: "Loading", isUser: false, isLoading: true }]);
+      setMessages([
+        ...messages,
+        { text: "Loading", isUser: false, isLoading: true },
+      ]);
 
       const response = await axiosPublic.post(
-        `http://127.0.0.1:6000/chatbot/chat`,
+        `http://20.195.9.167:4444/chatbot/chat`,
         {
           query: question,
           // project_id: selectedProject?._id,
