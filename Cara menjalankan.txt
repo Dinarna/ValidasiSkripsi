@@ -1,0 +1,13 @@
+Untuk yang python (Validasi Skripsi)
+- Menggunakan python 3.10
+- library yang belum terinstall bisa install apa aja yang belum ada karena gaada versi spesifik atau bisa coba "pip install -r requirements.txt
+"
+- Jika 2 hal di atas sudah, jalankan yang app.py
+
+Untuk yang Sociachat
+- Gunakan NodeJS versi >= v18
+
+-- run di terminal
+- npm install
+- npm run dev
+- buka link yang diberikan di terminal
