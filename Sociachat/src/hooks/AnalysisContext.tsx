@@ -343,7 +343,7 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
       setMessages([...messages, { text: "Loading", isUser: false, isLoading: true }]);
 
       const response = await axiosPublic.post(
-        `http://127.0.0.1:5000/chatbot/chat`,
+        `http://127.0.0.1:6000/chatbot/chat`,
         {
           query: question,
           // project_id: selectedProject?._id,
