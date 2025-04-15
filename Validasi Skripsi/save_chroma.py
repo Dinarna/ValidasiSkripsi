@@ -25,7 +25,7 @@ def save_to_chroma():
     except Exception as e:
         collection = client_chroma.get_collection(name=collection_name)
 
-    folder_path = r"./Validasi Skripsi"
+    folder_path = r"./"
 
     dataframes = []
 
