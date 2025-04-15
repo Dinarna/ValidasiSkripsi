@@ -6,7 +6,7 @@ STATUS_FILE = "chroma_status.txt"  # File untuk menyimpan status koleksi
 
 def save_to_chroma():
     # Tentukan direktori untuk penyimpanan data ChromaDB
-    persist_directory = r"H:\My Drive\UNIKOM\Skripsi\Code\Coba\Validasi Skripsi\ChromaDB_Storage"
+    persist_directory = r"./ChromaDB_Storage"
 
     # Membuat klien Chroma dengan penyimpanan persisten
     client_chroma = chromadb.PersistentClient(path=persist_directory)
@@ -25,7 +25,7 @@ def save_to_chroma():
     except Exception as e:
         collection = client_chroma.get_collection(name=collection_name)
 
-    folder_path = r"H:\My Drive\UNIKOM\Skripsi\Code\Coba\Validasi Skripsi"
+    folder_path = r"./Validasi Skripsi"
 
     dataframes = []
 
