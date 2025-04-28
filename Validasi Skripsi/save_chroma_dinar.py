@@ -2,22 +2,30 @@ import chromadb
 import pandas as pd
 import os
 
+STATUS_FILE = "chroma_status.txt"  # File untuk menyimpan status koleksi
+
 def save_to_chroma():
     # Tentukan direktori untuk penyimpanan data ChromaDB
-    # persist_directory = r"D:\Kuliah\SKRIPSI\Validasi Skripsi\ChromaDB_Storage"
-    persist_directory = r"./ChromaDB_Storage"
+    persist_directory = r"D:\Kuliah\SKRIPSI\Validasi Skripsi\ChromaDB_Storage"
 
     # Membuat klien Chroma dengan penyimpanan persisten
     client_chroma = chromadb.PersistentClient(path=persist_directory)
 
-    # Coba dapatkan koleksi yang sudah ada, jika tidak ada, buat koleksi baru
+    # Nama koleksi
     collection_name = "politik2"
+
+    # Periksa apakah koleksi sudah dibuat sebelumnya
+    if os.path.exists(STATUS_FILE):
+        print("---- Koleksi sudah dibuat sebelumnya ----")
+        return client_chroma.get_collection(name=collection_name)
+
+    # Jika belum, buat koleksi baru
     try:
         collection = client_chroma.create_collection(name=collection_name)
     except Exception as e:
         collection = client_chroma.get_collection(name=collection_name)
 
-    folder_path = r"./"
+    folder_path = r"H:\My Drive\UNIKOM\Skripsi\Code\Validasi Skripsi"
 
     dataframes = []
 
@@ -36,8 +44,6 @@ def save_to_chroma():
 
     # Menggabungkan semua DataFrame menjadi satu
     combined_df = pd.concat(dataframes, ignore_index=True)
-
-    print(combined_df.duplicated().sum())
 
     # Menghapus duplikat
     combined_df.drop_duplicates(inplace=True)
@@ -73,6 +79,10 @@ def save_to_chroma():
 
     print("---- Data telah berhasil ditambahkan ke Chroma! ----")
 
+    # Tandai bahwa koleksi sudah dibuat
+    with open(STATUS_FILE, "w") as f:
+        f.write("done")
+
     return collection
 
 def rag(collection, query_text):
@@ -88,7 +98,8 @@ def rag(collection, query_text):
     sorted_results = sorted(documents_scores, key=lambda x: x[1], reverse=False)
 
     tweets = ""
+
     for i, (doc, score) in enumerate(sorted_results[:10], start=1):
-        tweets += f"- Informasi {i}: {doc} | " 
+        tweets += f" \n- Informasi: {doc}"
 
     return tweets
