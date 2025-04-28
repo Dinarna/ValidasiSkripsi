@@ -1,7 +1,15 @@
 import React, { Dispatch, SetStateAction } from "react";
 import SidebarHeader from "./sidebar-header";
 import SidebarSection from "./sidebar-section";
-import { TrendingUp, User, Smile, MessageCircle, Share2, Users, Bot } from "lucide-react";
+import {
+  TrendingUp,
+  User,
+  Smile,
+  MessageCircle,
+  Share2,
+  Users,
+  Bot,
+} from "lucide-react";
 import {
   CONTENT_OVERVIEW,
   CONTENT_TREN_OF_TWEET,
@@ -10,9 +18,11 @@ import {
   CONTENT_BUZZER,
   CONTENT_COMMUNITY,
   CONTENT_CHAT_BOT,
+  CONTENT_KUESIONER,
 } from "@/types/constantLabelSidebar";
 import { useAnalysis } from "@/hooks/AnalysisContext";
 import { ChatbotIcon } from "@/assets";
+import KuesionerIcon from "@/assets/kuesioner-icon";
 
 const Sidebar: React.FC = () => {
   const { projects, selectedProject, active, setSelectedProject, setActive } =
@@ -23,7 +33,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-[329px] px-[25px] py-6 bg-white rounded-lg flex-col justify-start items-start inline-flex sticky top-24 gap-5">
+    <aside className="w-full px-5 lg:px-[25px] py-6 bg-white rounded-lg flex-col justify-start items-start inline-flex gap-5">
       {/* <SidebarHeader
         projects={projects}
         selectedProject={selectedProject?._id ?? ""}
@@ -42,7 +52,7 @@ const Sidebar: React.FC = () => {
         ]}
       />
       <div className="self-stretch  border border-gray-200"></div> */}
-     {/* <SidebarSection
+      {/* <SidebarSection
         items={[
           {
             label: CONTENT_TREN_OF_TWEET,
@@ -90,6 +100,12 @@ const Sidebar: React.FC = () => {
             icon: <ChatbotIcon isActive={active === CONTENT_CHAT_BOT} />,
             active: active === CONTENT_CHAT_BOT,
             onClick: () => handleItemClick(CONTENT_CHAT_BOT),
+          },
+          {
+            label: CONTENT_KUESIONER,
+            icon: <KuesionerIcon isActive={active === CONTENT_KUESIONER} />,
+            active: active === CONTENT_KUESIONER,
+            onClick: () => handleItemClick(CONTENT_KUESIONER),
           },
         ]}
       />

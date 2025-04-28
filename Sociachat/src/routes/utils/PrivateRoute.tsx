@@ -4,18 +4,17 @@ import { useAuth } from "@/hooks/AuthContext";
 import Spinner from "@/components/spinner";
 
 function PrivateRoute() {
-  return <Navigate to="/analysis" />;
-  // const { auth, loading } = useAuth();
+  const { auth, loading } = useAuth();
 
-  // if (loading) {
-  //   return <Spinner />;
-  // }
+  if (loading) {
+    return <Spinner />;
+  }
 
-  // if (!auth) {
-  //   return <Navigate to="/login" />;
-  // }
+  if (!auth) {
+    return <Navigate to="/login" />;
+  }
 
-  // return <Outlet />;
+  return <Outlet />;
 }
 
 export default PrivateRoute;

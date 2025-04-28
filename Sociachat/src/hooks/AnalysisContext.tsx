@@ -1,29 +1,37 @@
-import { axiosPrivate, axiosPublic } from "@/axiosConfig";
 import {
   createContext,
-  ReactNode,
   useContext,
-  useEffect,
   useState,
+  ReactNode,
+  useEffect,
 } from "react";
+import { axiosPrivate, axiosPublic } from "@/axiosConfig";
 
-import { API } from "@/lib/urls";
-import { Buzzer } from "@/types/Buzzer";
-import { ChatbotMessage, ChatbotPromptTopics } from "@/types/Chatbot";
-import { Community } from "@/types/Community";
 import {
-  CONTENT_BUZZER,
-  CONTENT_CHAT_BOT,
-  CONTENT_COMMUNITY,
-  CONTENT_EMOTION_ANALYSIS,
   CONTENT_OVERVIEW,
-  CONTENT_SENTIMENT_ANALYST,
   CONTENT_TREN_OF_TWEET,
+  CONTENT_SENTIMENT_ANALYST,
+  CONTENT_EMOTION_ANALYSIS,
+  CONTENT_BUZZER,
+  CONTENT_COMMUNITY,
+  CONTENT_CHAT_BOT,
+  CONTENT_KUESIONER,
 } from "@/types/constantLabelSidebar";
-import { Emotion, TEmotion } from "@/types/Emotion";
 import Project from "@/types/Project";
 import { Sentiment, TSentiment } from "@/types/Sentiment";
+import axios from "axios";
+import { API } from "@/lib/urls";
 import { Topic, TweetTopic } from "@/types/Topic";
+import { Emotion, TEmotion } from "@/types/Emotion";
+import { Buzzer } from "@/types/Buzzer";
+import {
+  ChatbotMessage,
+  ChatbotPrompt,
+  ChatbotPromptTopic,
+  ChatbotPromptTopics,
+} from "@/types/Chatbot";
+import { Community } from "@/types/Community";
+import cookies from "js-cookie";
 
 type AnalysisProviderProps = {
   children: ReactNode;
@@ -58,6 +66,8 @@ const AnalysisContext = createContext<
       prompt: ChatbotPromptTopics | null;
       messages: ChatbotMessage[];
       hasAnimated: Record<number, boolean>;
+      kuesionerQuestions: string[];
+      kuesionerAnswers: string[];
       handleSetHasAnimated: (index: number) => void;
       setSelectedProject: (project: Project | null) => void;
       setActive: (active: string) => void;
@@ -112,6 +122,8 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
   const [hasAnimated, setHasAnimated] = useState<{ [key: number]: boolean }>(
     {}
   );
+  const [kuesionerQuestions, setKuesionerQuestions] = useState<string[]>([]);
+  const [kuesionerAnswers, setKuesionerAnswers] = useState<string[]>([]);
 
   const handleSetHasAnimated = (index: number) => {
     setHasAnimated((prevState) => ({
@@ -129,7 +141,7 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
   }, [topics, selectedTopic]);
 
   useEffect(() => {
-    if (selectedProject) getPrompt();
+    // if (selectedProject) getPrompt();
     setMessages([]);
     setHasAnimated({});
   }, [selectedProject]);
@@ -167,7 +179,10 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
         getCommunity();
         break;
       case CONTENT_CHAT_BOT:
-        getPrompt();
+        // getPrompt();
+        break;
+      case CONTENT_KUESIONER:
+        // getKuesioner();
         break;
       default:
         break;
@@ -331,32 +346,16 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
   };
 
   const getPrompt = async () => {
-    // setMessages([
-    //   {
-    //     text: "Hi, how can I help you?",
-    //     isUser: false,
-    //     isLoading: false,
-    //   },
-    //   {
-    //     text: "Apa itu Algoritma?",
-    //     isUser: true,
-    //     isLoading: false,
-    //   },
-    //   {
-    //     text: "Algoritma adalah langkah-langkah sistematis yang digunakan untuk menyelesaikan suatu masalah atau mencapai tujuan tertentu. Dalam konteks pemrograman, algoritma adalah urutan instruksi yang diikuti oleh komputer untuk menyelesaikan tugas tertentu.",
-    //     isUser: false,
-    //     isLoading: false,
-    //   }
-    // ]);
-    // try {
-    //   const response = await axiosPublic.get(
-    //     `${API}/chatbot/prompt?project_id=${selectedProject?._id}`
-    //   );
-    //   const data = response.data.data.prompt;
-    //   setPrompt(data);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      const response = await axiosPublic.get(
+        `${API}/chatbot/prompt?project_id=${selectedProject?._id}`
+      );
+
+      const data = response.data.data.prompt;
+      setPrompt(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const sendChat = async (question: string, messages: ChatbotMessage[]) => {
@@ -370,7 +369,7 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
         `http://20.195.9.167:4444/chatbot/chat`,
         {
           query: question,
-          // project_id: selectedProject?._id,
+          user_id: cookies.get("user_id"),
         }
       );
 
@@ -393,6 +392,18 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
     }
   };
 
+  const getKuesioner = async () => {
+    try {
+      const response = await axiosPublic.get(
+        `http://20.195.9.167:4444/chatbot/data`
+      );
+      setKuesionerQuestions(response.data.questions);
+      setKuesionerAnswers(response.data.answers);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const resetAnalysis = () => {
     setOverview(null);
     setTopic([]);
@@ -405,6 +416,8 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
     setCommunity(null);
     setFilteredCommunity(null);
     setPrompt(null);
+    setKuesionerAnswers([]);
+    setKuesionerQuestions([]);
     // setMessages([]);
   };
 
@@ -431,6 +444,8 @@ export const AnalysisProvider = ({ children }: AnalysisProviderProps) => {
         prompt,
         messages,
         hasAnimated,
+        kuesionerQuestions,
+        kuesionerAnswers,
         handleSetHasAnimated,
         sendChat,
         setSelectedProject,

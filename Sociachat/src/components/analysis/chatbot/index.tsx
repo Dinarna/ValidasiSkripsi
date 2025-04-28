@@ -35,7 +35,10 @@ const ChatBot = () => {
     e.preventDefault();
     if (question.trim() === "") return;
 
-    sendChat(question, [...messages, { text: question, isUser: true, isLoading: false }]);
+    sendChat(question, [
+      ...messages,
+      { text: question, isUser: true, isLoading: false },
+    ]);
     setQuestion("");
   };
 
@@ -48,8 +51,8 @@ const ChatBot = () => {
   // }
 
   return (
-    <section className="w-[761px] h-[80vh] p-6 bg-white rounded-lg shadow flex flex-col justify-between items-center">
-        {messages.length > 0 ? (
+    <section className="w-full h-[80vh] p-6 bg-white rounded-lg shadow flex flex-col justify-between items-center">
+      {messages.length > 0 ? (
         <div className="self-stretch h-[800px] overflow-auto mb-10">
           {messages.map((msg, index) => {
             const isLastItem = index === messages.length - 1;
@@ -147,15 +150,18 @@ const ChatBot = () => {
               ))
             ) : (
               <>
-                <Skeleton className="h-14 w-full" />
-                <Skeleton className="h-14 w-full" />
+                {/* <Skeleton className="h-14 w-full" />
+                <Skeleton className="h-14 w-full" /> */}
               </>
             )}
           </div>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex w-full items-center space-x-2">
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-full items-center space-x-2"
+      >
         <Input
           type="text"
           placeholder="Type question here..."

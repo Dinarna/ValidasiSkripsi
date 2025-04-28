@@ -11,18 +11,18 @@ import { axiosPublic } from "@/axiosConfig";
 import axios from "axios";
 
 interface Auth {
-  id?: number;
-  email?: string;
-  accessToken?: string;
-  refreshToken?: string;
+  user_id?: String;
+  // email?: string;
+  // accessToken?: string;
+  // refreshToken?: string;
 }
 
 interface AuthContextType {
   auth: Auth | null;
-  login: (email: string, password: string) => Promise<any>;
+  login: (username: string, password: string) => Promise<any>;
   logout: () => void;
   register: (
-    email: string,
+    username: string,
     name: string,
     password: string,
     confirmPassword: string
@@ -40,28 +40,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const initializeAuth = () => {
-      const accessToken = cookies.get("accessToken");
-      const refreshToken = cookies.get("refreshToken");
-      if (accessToken && refreshToken) {
-        setAuth({ accessToken, refreshToken });
+      const user_id = cookies.get("user_id");
+      if (user_id) {
+        setAuth({ user_id });
       }
 
-      setLoading(false); // Set loading to false after initialization
+      setLoading(false);
     };
     initializeAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (username: string, password: string) => {
     try {
-      const response = await axiosPublic.post(`${API}/account/auth/login`, {
-        email,
-        password,
-      });
+      const response = await axiosPublic.post(
+        `http://20.195.9.167:4444/chatbot/login`,
+        {
+          username,
+          password,
+        }
+      );
       if (response.status === 201 || response.status === 200) {
-        const { accessToken, refreshToken } = response.data.data;
-        setAuth({ accessToken, refreshToken });
-        cookies.set("accessToken", accessToken, { expires: 1 }); // Set cookie with expiration
-        cookies.set("refreshToken", refreshToken, { expires: 7 }); // Set cookie with expiration
+        const { user_id, username, nama } = response.data;
+        setAuth({ user_id });
+        cookies.set("user_id", user_id, { expires: 1 });
+        cookies.set("username", username, { expires: 1 });
+        cookies.set("nama", nama, { expires: 1 });
       }
       return response;
     } catch (error) {
@@ -90,8 +93,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const logout = () => {
     setAuth(null);
-    cookies.remove("accessToken"); // Remove the token cookie
-    cookies.remove("refreshToken"); // Remove the refresh token cookie
+    cookies.remove("user_id");
+    cookies.remove("username");
+    cookies.remove("nama");
   };
 
   return (

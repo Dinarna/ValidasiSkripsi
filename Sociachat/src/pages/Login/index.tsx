@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 
 const Login = () => {
   interface formLogin {
-    email: string;
+    username: string;
     password: string;
   }
 
@@ -32,7 +32,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const formSchema = z.object({
-    email: z.string().email("Please enter a valid email address."),
+    username: z.string().min(1, { message: "Username is required." }),
     password: z.string().min(6, "Password must be at least 6 characters long."),
   });
 
@@ -43,7 +43,7 @@ const Login = () => {
   const onSubmit: SubmitHandler<formLogin> = async (data) => {
     setLoading(true);
     try {
-      const response = await login(data.email, data.password);
+      const response = await login(data.username, data.password);
       if (response.status === 201 || response.status === 200) {
         toast({
           title: response.data.message,
@@ -52,14 +52,14 @@ const Login = () => {
       } else {
         toast({
           title: response.data.message,
-          description: "Please check your email and password.",
+          description: "Please check your username and password.",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
         title: "Login failed",
-        description: "Please check your email and password.",
+        description: "Please check your username and password.",
         variant: "destructive",
       });
       console.log(error);
@@ -70,7 +70,7 @@ const Login = () => {
 
   useEffect(() => {
     if (auth) {
-      navigate("/dashboard", { replace: true });
+      navigate("/analysis", { replace: true });
     }
   }, [auth, navigate]);
 
@@ -109,15 +109,12 @@ const Login = () => {
                   >
                     <FormField
                       control={form.control}
-                      name="email"
+                      name="username"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email Address</FormLabel>
+                          <FormLabel>Username</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="example@example.com"
-                              {...field}
-                            />
+                            <Input placeholder="example" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

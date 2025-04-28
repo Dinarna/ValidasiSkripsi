@@ -10,6 +10,7 @@ import {
   CONTENT_BUZZER,
   CONTENT_COMMUNITY,
   CONTENT_CHAT_BOT,
+  CONTENT_KUESIONER,
 } from "@/types/constantLabelSidebar";
 import TrenOfTweet from "@/components/analysis/tren-of-tweet";
 import Sentiment from "@/components/analysis/sentiment";
@@ -20,6 +21,7 @@ import Overview from "@/components/analysis/overview";
 import { useAnalysis } from "@/hooks/AnalysisContext";
 import { useSearchParams } from "react-router-dom";
 import CommunitySNA from "@/components/analysis/sna/community";
+import Kuesioner from "@/components/analysis/kuesioner";
 
 const Analyst: React.FC = () => {
   const { projects, active, setSelectedProject, getProjects, resetAnalysis } =
@@ -40,7 +42,7 @@ const Analyst: React.FC = () => {
   return (
     <PageWrapper title="Analysis">
       <Navbar />
-      <div className="layout flex flex-row space-x-8 justify-between items-start h-screen bg-background mt-24">
+      <div className="grid grid-cols-1 lg:grid-cols-[0.75fr_2fr] mx-3 lg:mx-10 gap-10 h-screen bg-background mt-24">
         <Sidebar />
         {active === CONTENT_OVERVIEW && <Overview />}
         {active === CONTENT_TREN_OF_TWEET && <TrenOfTweet />}
@@ -49,6 +51,7 @@ const Analyst: React.FC = () => {
         {active === CONTENT_BUZZER && <Buzzer />}
         {active === CONTENT_COMMUNITY && <CommunitySNA />}
         {active === CONTENT_CHAT_BOT && <ChatBot />}
+        {active === CONTENT_KUESIONER && <Kuesioner />}
       </div>
     </PageWrapper>
   );

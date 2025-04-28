@@ -7,18 +7,21 @@ import Spinner from "./components/spinner";
 import { AuthProvider } from "./hooks/AuthContext";
 import { AnalysisProvider } from "./hooks/AnalysisContext";
 import BaseRoute from "./routes";
+import { FormKuesionerProvider } from "./hooks/kuesionerContext";
 
 function App() {
   return (
     <AuthProvider>
       <FormProvider>
         <AnalysisProvider>
-          <Suspense fallback={<Spinner />}>
-            <Router>
-              <BaseRoute />
-              <Toaster />
-            </Router>
-          </Suspense>
+          <FormKuesionerProvider>
+            <Suspense fallback={<Spinner />}>
+              <Router>
+                <BaseRoute />
+                <Toaster />
+              </Router>
+            </Suspense>
+          </FormKuesionerProvider>
         </AnalysisProvider>
       </FormProvider>
     </AuthProvider>
