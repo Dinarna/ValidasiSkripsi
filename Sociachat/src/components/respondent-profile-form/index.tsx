@@ -231,7 +231,7 @@ const RespondentProfileForm: React.FC<RespondentProfileFormProps> = ({
   return (
     <Form {...form}>
       {isloading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50 overflow-hidden">
           <div className="flex items-center justify-center h-screen ">
             <svg
               className="animate-spin h-8 w-8 text-gray-600"
