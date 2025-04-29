@@ -1,7 +1,6 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import json
-from flask import jsonify
 
 # URI MongoDB
 uri = "mongodb+srv://validasi:sociachat123@validasi.57paaa9.mongodb.net/?appName=Validasi"
@@ -47,27 +46,25 @@ def delete_data():
 
 from bson import ObjectId  # Digunakan untuk menangani ObjectId dari MongoDB
 
-def login(username, password, nama):
+def login(username, password,nama):
     # Mencari dokumen dengan username dan password yang cocok
     user = accounts_collection.find_one({"username": username, "password": password})
     
     if user:
         # Mengembalikan status sukses beserta ID pengguna
-        response = {
+        return json.dumps({
             "status": "success",
             "message": "Login berhasil",
             "user_id": str(ObjectId(user["_id"])),
             "username": username,
-            "nama": str(nama)  # Konversi ObjectId ke string
-        }
-        return jsonify(response), 200  # Status code 200 untuk sukses
+            "nama" : str(nama) # Konversi ObjectId ke string
+        })
     else:
         # Mengembalikan status error jika username atau password salah
-        response = {
+        return json.dumps({
             "status": "error",
             "message": "Username atau password salah"
-        }
-        return jsonify(response), 401  # Status code 401 untuk unauthorized
+        })
 
 
 def simpan_data_user(data_user):

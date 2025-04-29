@@ -9,15 +9,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useAnalysis } from "@/hooks/AnalysisContext";
 import { useFormKuesionerContext } from "@/hooks/kuesionerContext";
 import { CONTENT_CHAT_BOT } from "@/types/constantLabelSidebar";
 import { zodResolver } from "@hookform/resolvers/zod";
+import cookies from "js-cookie";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "../ui/use-toast";
-import { useAnalysis } from "@/hooks/AnalysisContext";
-import cookies from "js-cookie";
 
 const formSchema = z
   .object({
@@ -186,19 +186,19 @@ const RespondentProfileForm: React.FC<RespondentProfileFormProps> = ({
       switch (cookies.get("username")) {
         case "user1":
           window.open(
-            "https://docs.google.com/spreadsheets/d/1aAF7gj7fVTeYpysT4RIwbsx-VHYJ0hXh2gQqi-6cets/edit?usp=sharing",
+            "https://docs.google.com/spreadsheets/d/1aAF7gj7fVTeYpysT4RIwbsx-VHYJ0hXh2gQqi-6cets/edit?usp=drive_link",
             "_blank"
           );
           break;
         case "user2":
           window.open(
-            "https://docs.google.com/spreadsheets/d/1Z3f5396NI5pxhOxO6MXaWTbytIeyirhluGsEseNyeM4/edit?usp=sharing",
+            "https://docs.google.com/spreadsheets/d/1GZ4O7MmevdmJoQlMrm-s9hHFhmlTdilOWCL3-M2ZdUQ/edit?usp=drive_link",
             "_blank"
           );
           break;
         case "user3":
           window.open(
-            "https://docs.google.com/spreadsheets/d/1O36jKCyAvf4jlp-2UHfO2Jb8zWtM8_g89Ar9oHdNLDA/edit?usp=sharing",
+            "https://docs.google.com/spreadsheets/d/1J_7oyfDkP0j5O0oZA_ItceQ56U1i6FiEdQdaAzp1ZRg/edit?usp=drive_link",
             "_blank"
           );
       }

@@ -72,21 +72,28 @@ export const FormKuesionerProvider = ({ children }: FormProviderProps) => {
   const createKuesioner = async () => {
     console.log("Membuat kuesioner", formKuesionerState);
     try {
-      const response = await axios.post(`http://20.195.9.167:4444/simpan-data`, {
-        user_id: cookies.get("user_id"),
-        identitas_responden: {
-          nama_lengkap: formKuesionerState.nama,
-          jenis_kelamin: formKuesionerState.jenisKelamin,
-          domisili: formKuesionerState.domisili,
-          jenjang_keahlian: formKuesionerState.keahlian,
-          jabatan: formKuesionerState.jabatan,
-          program_studi: formKuesionerState.institusi,
-          frekuensi_penggunaan_chatbot: formKuesionerState.frekuensiChatbot,
-        },
-        penilaian_chatbot: formKuesionerState.penilaianChatbot,
-        pertanyaan_refleksi: formKuesionerState.pertanyaanRefleksi,
-      });
-      return response;
+      const response = await axios.post(
+        `http://20.195.9.167:4444/simpan-data`,
+        {
+          user_id: cookies.get("user_id"),
+          identitas_responden: {
+            nama_lengkap: formKuesionerState.nama,
+            jenis_kelamin: formKuesionerState.jenisKelamin,
+            domisili: formKuesionerState.domisili,
+            jenjang_keahlian: formKuesionerState.keahlian,
+            jabatan: formKuesionerState.jabatan,
+            program_studi: formKuesionerState.institusi,
+            frekuensi_penggunaan_chatbot: formKuesionerState.frekuensiChatbot,
+          },
+          penilaian_chatbot: formKuesionerState.penilaianChatbot,
+          pertanyaan_refleksi: formKuesionerState.pertanyaanRefleksi,
+        }
+      );
+      const response_getdata = await axios.get(
+        `http://20.195.9.167:4444/chatbot/data`
+      );
+      console.log("Response get data", response_getdata);
+      return { response, response_getdata };
     } catch (error) {
       console.error("Gagal membuat kuesioner", error);
     }
