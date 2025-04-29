@@ -14,7 +14,7 @@ import { useFormKuesionerContext } from "@/hooks/kuesionerContext";
 import { CONTENT_CHAT_BOT } from "@/types/constantLabelSidebar";
 import { zodResolver } from "@hookform/resolvers/zod";
 import cookies from "js-cookie";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "../ui/use-toast";
@@ -118,7 +118,7 @@ const RespondentProfileForm: React.FC<RespondentProfileFormProps> = ({
   onNextStep,
   onPrevStep,
 }) => {
-  const [isloading,setisloading] = useState(false)
+  const [isloading, setisloading] = useState(false);
   const {
     formKuesionerState,
     updateFormKuesionerState,
@@ -230,31 +230,31 @@ const RespondentProfileForm: React.FC<RespondentProfileFormProps> = ({
 
   return (
     <Form {...form}>
-    {isloading && (
-      <div> 
-        <div className="flex items-center justify-center h-screen">
-          <svg
-            className="animate-spin h-8 w-8 text-gray-600"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 1 1 16 0A8 8 0 0 1 4 12zm2.5-1h11a2.5 2.5 0 1 1-5 0h-6a2.5 2.5 0 0 1-5 0z"
-            ></path>
-          </svg>
+      {isloading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+          <div className="flex items-center justify-center h-screen ">
+            <svg
+              className="animate-spin h-8 w-8 text-gray-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 1 1 16 0A8 8 0 0 1 4 12zm2.5-1h11a2.5 2.5 0 1 1-5 0h-6a2.5 2.5 0 0 1-5 0z"
+              ></path>
+            </svg>
+          </div>
         </div>
-      </div>
       )}
       <p>
         <b>📑Profil Responden</b> <br />
