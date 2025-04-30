@@ -156,6 +156,7 @@ def create_app():
             return jsonify({"answer": full_response, "questions": new_questions})
         
         except Exception as e:
+            print(f"Error: {e}")
             return jsonify({"error": str(e)}), 500
 
     return app
