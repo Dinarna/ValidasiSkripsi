@@ -67,9 +67,9 @@ def buat_pertanyaan(pertanyaan, answer):
     prompt_1 = f"""Pertanyaan sebelum: {pertanyaan} 
     Jawaban: {answer}
     Buatlah 2-3 pertanyaan yang diajukan berdasarkan informasi yang diberikan dalam bahasa indonesia. Pertanyaan yang dibentuk haruslah relevan dengan informasi yang diberikan. Contoh pertanyaan yang dihasilkan berdasarkan jawaban dipisahkah oleh triple backticks.
-    Jika ada jawaban seperti ini: "Sama-sama! Semoga harimu menyenangkan!😊" atau sejenisnya, maka gunakan contoh no 2.
+    Jika ada jawaban seperti ini: "Sama-sama! Semoga harimu menyenangkan!" atau sejenisnya, maka gunakan contoh no 2.
 
-    Lalu, jika ada jawaban seperti "Sama-sama! Semoga harimu menyenangkan!😊" atau sejenisnya, maka output yang dihasilakn adalah string kosong.
+    Lalu, jika ada jawaban seperti "Sama-sama! Semoga harimu menyenangkan!" atau sejenisnya, maka output yang dihasilakn adalah string kosong.
 
     JANGAN MEMBUAT PERTANYAAN YANG SAMA DENGAN PERTANYAAN SEBELUMNYA!
 
@@ -89,7 +89,7 @@ def buat_pertanyaan(pertanyaan, answer):
 
     Contoh 2:
     ```
-    Jawaban: "Sama-sama! Jika ada pertanyaan lebih lanjut, jangan ragu untuk bertanya. Semoga harimu menyenangkan!😊"
+    Jawaban: "Sama-sama! Jika ada pertanyaan lebih lanjut, jangan ragu untuk bertanya. Semoga harimu menyenangkan!"
 
     Maka pertanyaan yang dihasilkan adalah sebagai berikut:
     pertanyaan: Semoga harimu menyenangkan
@@ -99,7 +99,7 @@ def buat_pertanyaan(pertanyaan, answer):
     Berikan greeting kepada penggunanya, tetapi dengan format pertanyaan dan prompt.
     ```
 
-    Jika terdapat jawaban seperti "Sama-sama! Semoga harimu menyenangkan!😊" atau sejenisnya, jawab seperti contoh 2. """
+    Jika terdapat jawaban seperti "Sama-sama! Semoga harimu menyenangkan!" atau sejenisnya, jawab seperti contoh 2. """
 
     prompt_2 = """\n Format the outputs in JSON. Contoh:
     [
